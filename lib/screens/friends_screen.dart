@@ -215,31 +215,25 @@ class _PersonCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    // A phone's row has half its width for each answer: the label, not
+    // an icon, says what the button does.
+    final icon = primaryIcon == null || theme.isPhone
+        ? null
+        : PhosphorIcon(primaryIcon!);
     final primary = primaryTonal
         ? Button.secondary(
-            expands: true,
-            leading: primaryIcon == null ? null : PhosphorIcon(primaryIcon!),
+            leading: icon,
             onPressed: onPrimary,
-            child: Text(
-              primaryLabel,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: ButtonLabel(primaryLabel),
           )
         : Button(
-            expands: true,
-            leading: primaryIcon == null ? null : PhosphorIcon(primaryIcon!),
+            leading: icon,
             onPressed: onPrimary,
-            child: Text(
-              primaryLabel,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+            child: ButtonLabel(primaryLabel),
           );
     final secondary = Button.secondary(
-      expands: true,
       onPressed: onSecondary,
-      child: Text(secondaryLabel, maxLines: 1, overflow: TextOverflow.ellipsis),
+      child: ButtonLabel(secondaryLabel),
     );
     final name = Text(
       person.name,

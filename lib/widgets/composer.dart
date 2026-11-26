@@ -72,17 +72,12 @@ class ComposerCard extends StatelessWidget {
       String label,
       VoidCallback onPressed,
     ) => Expanded(
+      // The icon and label centred as one group in the row's share.
       child: Button.ghost(
-        expands: true,
         onPressed: onPressed,
         style: ButtonTheme(foregroundColor: scheme.mutedForeground),
         leading: PhosphorIcon(icon, color: color),
-        child: Text(
-          label,
-          maxLines: 1,
-          softWrap: false,
-          overflow: TextOverflow.ellipsis,
-        ),
+        child: ButtonLabel(label),
       ),
     );
 

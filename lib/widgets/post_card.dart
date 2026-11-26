@@ -573,8 +573,10 @@ class _ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
+    // Not `expands`: that stretches the label and leaves the icon at the
+    // start. Given the row's share of the width, the button centres its
+    // icon and label as one group, and the label still gives way.
     return Button.ghost(
-      expands: true,
       onPressed: onPressed,
       onLongPress: onLongPress,
       style: ButtonTheme(
@@ -586,13 +588,14 @@ class _ActionButton extends StatelessWidget {
             : null,
       ),
       leading: PhosphorIcon(icon, color: color),
-      // An expanding button already lets its label shrink.
-      child: Text(
-        label,
-        style: TextStyle(color: color),
-        maxLines: 1,
-        softWrap: false,
-        overflow: TextOverflow.ellipsis,
+      child: Flexible(
+        child: Text(
+          label,
+          style: TextStyle(color: color),
+          maxLines: 1,
+          softWrap: false,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }
