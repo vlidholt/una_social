@@ -25,11 +25,17 @@ void main() {
   ) async {
     final update = Platform.environment['UPDATE_APP_ICONS'] == '1';
     // Rounded for a favicon and the plain icons; square, with the art in
-    // the safe middle, for the maskable ones a platform crops itself.
+    // the safe middle, for the maskable ones a platform crops itself; and
+    // square to the edges for the Apple touch icon, which iOS rounds
+    // itself (it fills transparent corners with black).
     final icons = {
-      'web/favicon.png': (64, const SocialMarkPainter()),
+      'web/favicon.png': (32, const SocialMarkPainter()),
       'web/icons/Icon-192.png': (192, const SocialMarkPainter()),
       'web/icons/Icon-512.png': (512, const SocialMarkPainter()),
+      'web/icons/apple-touch-icon.png': (
+        180,
+        const SocialMarkPainter(radius: 0),
+      ),
       'web/icons/Icon-maskable-192.png': (
         192,
         const SocialMarkPainter(radius: 0, inset: .1),
