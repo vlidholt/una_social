@@ -156,7 +156,7 @@ class ListingTile extends StatelessWidget {
                     scale: states.contains(WidgetState.hovered) ? 1.04 : 1,
                     duration: Motion.of(context).normal,
                     curve: Motion.of(context).standard,
-                    child: Image.asset(listing.photo, fit: BoxFit.cover),
+                    child: RevealImage.asset(listing.photo, fit: BoxFit.cover),
                   ),
                 ),
               ),

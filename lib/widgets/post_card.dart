@@ -300,7 +300,7 @@ class _PhotoGrid extends StatelessWidget {
     Widget tile(int index) => Pressable(
       onPressed: () => openPhotos(context, photos, initial: index, post: post),
       semanticLabel: 'Photo ${index + 1} of ${photos.length}',
-      builder: (context, states) => Image.asset(
+      builder: (context, states) => RevealImage.asset(
         photos[index],
         fit: BoxFit.cover,
         width: double.infinity,

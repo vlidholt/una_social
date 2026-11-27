@@ -52,6 +52,13 @@ from.
   in a `Button(expands: true)`, which already wraps its child in an
   `Expanded`; a `Flexible` there is a parent-data error.
 - Nothing is a dead end: a control with nowhere to go answers with a toast.
+- **Photographs are `RevealImage`s** (`Photo` is one): a placeholder,
+  then the exposure reveal. What the app can see coming is precached
+  (`precachePhotos`) so it is simply there: the feed's photos and the
+  stories while Home's skeletons show, the next two stories in the
+  viewer, every page of the photo viewer. The viewer itself keeps
+  `Image.asset`: its first photo was just on screen as a thumbnail. The
+  faces in an `AvatarGroup` stay plain images.
 
 ## Tests
 

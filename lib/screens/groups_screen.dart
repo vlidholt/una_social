@@ -172,7 +172,10 @@ class _YourGroups extends StatelessWidget {
                               : 1,
                           duration: Motion.of(context).normal,
                           curve: Motion.of(context).standard,
-                          child: Image.asset(group.cover, fit: BoxFit.cover),
+                          child: RevealImage.asset(
+                            group.cover,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         const DecoratedBox(
                           decoration: BoxDecoration(
@@ -329,7 +332,7 @@ class GroupPage extends StatelessWidget {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      Image.asset(group.cover, fit: BoxFit.cover),
+                      RevealImage.asset(group.cover, fit: BoxFit.cover),
                       DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(

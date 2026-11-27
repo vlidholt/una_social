@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:una/una.dart';
 import 'package:una_social/data.dart';
@@ -142,6 +144,14 @@ class ReactionDisc extends StatelessWidget {
   }
 }
 
+/// Starts loading the photographs [assets] into the image cache, so a
+/// [RevealImage] of one is simply there when it is built.
+void precachePhotos(BuildContext context, Iterable<String> assets) {
+  for (final asset in assets) {
+    unawaited(RevealImage.precache(context, AssetImage(asset)));
+  }
+}
+
 /// A photograph clipped to the theme's corners.
 class Photo extends StatelessWidget {
   const Photo(
@@ -162,12 +172,11 @@ class Photo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    Widget image = Image.asset(
+    Widget image = RevealImage.asset(
       asset,
       fit: BoxFit.cover,
       semanticLabel: semanticLabel,
       excludeFromSemantics: semanticLabel == null,
-      gaplessPlayback: true,
       errorBuilder: (context, error, stackTrace) =>
           ColoredBox(color: theme.colorScheme.muted),
     );

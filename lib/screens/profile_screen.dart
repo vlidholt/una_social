@@ -163,7 +163,7 @@ class _Header extends StatelessWidget {
     final portrait = phone ? 128.0 : 168.0;
     final friends = session.friends;
 
-    final cover = Image.asset(
+    final cover = RevealImage.asset(
       isMe ? 'assets/images/cover_profile.jpg' : _coverFor(person),
       fit: BoxFit.cover,
       semanticLabel: '${person.firstName}\'s cover photo',
@@ -556,7 +556,7 @@ class _PhotoGridCard extends StatelessWidget {
               Pressable(
                 onPressed: () => openPhotos(context, photos, initial: index),
                 semanticLabel: 'Photo ${index + 1}',
-                builder: (context, states) => Image.asset(
+                builder: (context, states) => RevealImage.asset(
                   photo,
                   fit: BoxFit.cover,
                   excludeFromSemantics: true,

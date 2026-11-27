@@ -71,7 +71,7 @@ class _StoryCard extends StatelessWidget {
                 scale: hovered ? 1.05 : 1,
                 duration: Motion.of(context).normal,
                 curve: Motion.of(context).standard,
-                child: Image.asset(
+                child: RevealImage.asset(
                   story.photo,
                   fit: BoxFit.cover,
                   excludeFromSemantics: true,
@@ -142,7 +142,7 @@ class _CreateStoryCard extends StatelessWidget {
             children: [
               Expanded(
                 flex: 7,
-                child: Image.asset(
+                child: RevealImage.asset(
                   People.me.photo,
                   fit: BoxFit.cover,
                   excludeFromSemantics: true,
@@ -232,6 +232,17 @@ class _StoryViewerState extends State<StoryViewer>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _precacheAhead();
+  }
+
+  /// The two stories after the one showing, so a step lands on a picture.
+  void _precacheAhead() => precachePhotos(context, [
+    for (final story in Stories.all.skip(_index + 1).take(2)) story.photo,
+  ]);
+
+  @override
   void dispose() {
     _progress.dispose();
     super.dispose();
@@ -255,6 +266,7 @@ class _StoryViewerState extends State<StoryViewer>
       _index = next;
       _liked = false;
     });
+    _precacheAhead();
     _progress.forward(from: 0);
   }
 
@@ -272,7 +284,7 @@ class _StoryViewerState extends State<StoryViewer>
         children: [
           ContentSwitch(
             value: _index,
-            child: Image.asset(
+            child: RevealImage.asset(
               story.photo,
               key: ValueKey(_index),
               fit: BoxFit.cover,

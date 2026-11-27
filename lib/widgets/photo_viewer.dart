@@ -42,6 +42,14 @@ class _PhotoViewerState extends State<PhotoViewer> {
   late int _page = widget.initial;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The photo opened was just a thumbnail, so it is shown as it is; the
+    // others are loaded now, before they are swiped to.
+    precachePhotos(context, widget.photos);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final post = widget.post;

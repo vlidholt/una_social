@@ -176,7 +176,7 @@ class _NoticeRow extends StatelessWidget {
         : ClipOval(
             child: SizedBox.square(
               dimension: size,
-              child: Image.asset(notice.photo!, fit: BoxFit.cover),
+              child: RevealImage.asset(notice.photo!, fit: BoxFit.cover),
             ),
           );
     return Pressable(

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/widgets.dart';
 import 'package:una/una.dart';
+import 'package:una_social/data.dart';
 import 'package:una_social/session.dart';
 import 'package:una_social/widgets/composer.dart';
 import 'package:una_social/widgets/pieces.dart';
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// for a moment, as they would over a network.
   bool _loading = true;
   Timer? _timer;
+  bool _precached = false;
 
   @override
   void initState() {
@@ -35,6 +37,20 @@ class _HomeScreenState extends State<HomeScreen> {
     _timer = Timer(const Duration(milliseconds: 900), () {
       if (mounted) setState(() => _loading = false);
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // The posts' photos load while the skeletons stand in, so the feed
+    // arrives with its pictures; the stories' photos are what the story
+    // viewer opens on.
+    if (_precached) return;
+    _precached = true;
+    precachePhotos(context, [
+      for (final post in context.social.feed) ...post.photos,
+      for (final story in Stories.all) story.photo,
+    ]);
   }
 
   @override
