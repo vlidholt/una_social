@@ -149,10 +149,13 @@ class SocialMarkPainter extends CustomPainter {
           const Radius.circular(5.6),
         ),
       )
-      // The tail, low on the left.
-      ..moveTo(7.2, 15.6)
-      ..quadraticBezierTo(7.6, 19.2, 4.8, 20.4)
-      ..quadraticBezierTo(9.8, 20.6, 12.4, 16.8)
+      // The tail, low on the left, wound clockwise like the rounded
+      // rectangle so the two fill as one shape: wound the other way, the
+      // nonzero rule cancelled them where they overlap and left a gap.
+      // (Not `Path.combine`: on the web it returns its first operand.)
+      ..moveTo(12.4, 16.8)
+      ..quadraticBezierTo(9.8, 20.6, 4.8, 20.4)
+      ..quadraticBezierTo(7.6, 19.2, 7.2, 15.6)
       ..close();
     canvas.drawPath(
       bubble,
