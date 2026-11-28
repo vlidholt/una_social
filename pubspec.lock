@@ -506,7 +506,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: ef908b58c866f1d6084d83c1d399b3f5dfb76d35
+      resolved-ref: "335708ce07c24d823921bd1b772e18abab472e7b"
       url: "https://github.com/vlidholt/una.git"
     source: git
     version: "0.1.0"
