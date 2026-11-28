@@ -107,20 +107,25 @@ class SocialMarkPainter extends CustomPainter {
       box,
       Radius.circular(side * radius),
     );
-    canvas.drawRSuperellipse(
-      tile,
-      Paint()
-        ..shader = const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [indigo, violet, pink],
-          stops: [0, .55, 1],
-        ).createShader(box),
-    );
-    // A soft sheen across the top, as glass catches it.
+    // The gradient fills the tile through a clip, not `drawRSuperellipse`:
+    // on the web (CanvasKit and skwasm) that draws a path centred on the
+    // origin under a translation to the tile's centre, and the shader moves
+    // with it, so the tile showed only the indigo half of the gradient and
+    // never reached the pink the icons have. A clip is geometry only.
     canvas
       ..save()
       ..clipRSuperellipse(tile)
+      ..drawRect(
+        box,
+        Paint()
+          ..shader = const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [indigo, violet, pink],
+            stops: [0, .55, 1],
+          ).createShader(box),
+      )
+      // A soft sheen across the top, as glass catches it.
       ..drawRect(
         Rect.fromLTWH(0, 0, side, side * .5),
         Paint()

@@ -564,13 +564,7 @@ class _ThreadState extends State<Thread> {
                       placeholder: const Text('Aa'),
                       textInputAction: TextInputAction.send,
                       onSubmitted: (_) => _send(),
-                      decoration: UnaDecoration(
-                        color: scheme.muted,
-                        border: UnaBorder.all(
-                          color: const Color(0x00000000),
-                          borderRadius: BorderRadius.circular(22),
-                        ),
-                      ),
+                      decoration: theme.pillFieldDecoration,
                     ),
                   ),
                   const Gap.xs(),

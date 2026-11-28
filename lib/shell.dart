@@ -38,6 +38,25 @@ class SocialShell extends StatelessWidget {
   /// The width from which the destinations are in the top bar.
   static const topBarFrom = 1024.0;
 
+  /// [theme] with the top bar's content as wide as Home's columns.
+  ///
+  /// The bar's own cap is the theme's page width (1280), so on a wide window
+  /// the logo and the account button sat inside the shortcuts and contacts
+  /// columns. `AppBarTheme.maxWidth` caps the bar outside its padding, which
+  /// is the page margin Home keeps too, hence the addition. Derived once per
+  /// ambient theme: `ThemeData.copyWith` re-runs the factory, and a new theme
+  /// per build would be a theme change on every rebuild.
+  static ThemeData _barTheme(ThemeData theme) =>
+      _barThemes[theme] ??= theme.copyWith(
+        appBarTheme: AppBarTheme(
+          maxWidth:
+              HomeScreen.desktopMaxWidth +
+              (theme.appBarTheme.padding?.horizontal ?? 0),
+        ),
+      );
+
+  static final _barThemes = Expando<ThemeData>();
+
   @override
   Widget build(BuildContext context) {
     return SignalBuilder(
@@ -55,90 +74,95 @@ class SocialShell extends StatelessWidget {
             // small window — the destinations go to the floating bottom
             // bar and the bar is the phone's.
             return LayoutBuilder(
-              builder: (context, constraints) => NavigationScaffold(
-                layout: constraints.maxWidth >= SocialShell.topBarFrom
-                    ? NavigationLayout.auto
-                    : NavigationLayout.bottomBar,
-                selectedIndex: destination.index,
-                onDestinationSelected: (index) =>
-                    context.goTo(Destination.values[index]),
-                destinations: [
-                  const NavigationDestination(
-                    icon: PhosphorIcon(PhosphorIconsRegular.house),
-                    selectedIcon: PhosphorIcon(PhosphorIconsFill.house),
-                    label: 'Home',
-                  ),
-                  NavigationDestination(
-                    icon: const PhosphorIcon(PhosphorIconsRegular.usersThree),
-                    selectedIcon: const PhosphorIcon(
-                      PhosphorIconsFill.usersThree,
+              builder: (context, constraints) => Theme(
+                data: _barTheme(theme),
+                child: NavigationScaffold(
+                  layout: constraints.maxWidth >= SocialShell.topBarFrom
+                      ? NavigationLayout.auto
+                      : NavigationLayout.bottomBar,
+                  selectedIndex: destination.index,
+                  onDestinationSelected: (index) =>
+                      context.goTo(Destination.values[index]),
+                  destinations: [
+                    const NavigationDestination(
+                      icon: PhosphorIcon(PhosphorIconsRegular.house),
+                      selectedIcon: PhosphorIcon(PhosphorIconsFill.house),
+                      label: 'Home',
                     ),
-                    label: 'Friends',
-                    badgeCount: session.incomingRequests.length,
-                  ),
-                  const NavigationDestination(
-                    icon: PhosphorIcon(PhosphorIconsRegular.usersFour),
-                    selectedIcon: PhosphorIcon(PhosphorIconsFill.usersFour),
-                    label: 'Groups',
-                  ),
-                  const NavigationDestination(
-                    icon: PhosphorIcon(PhosphorIconsRegular.storefront),
-                    selectedIcon: PhosphorIcon(PhosphorIconsFill.storefront),
-                    label: 'Marketplace',
-                  ),
-                  const NavigationDestination(
-                    icon: PhosphorIcon(PhosphorIconsRegular.calendarStar),
-                    selectedIcon: PhosphorIcon(PhosphorIconsFill.calendarStar),
-                    label: 'Events',
-                    showInBottomBar: false,
-                  ),
-                  NavigationDestination(
-                    icon: const PhosphorIcon(PhosphorIconsRegular.bell),
-                    selectedIcon: const PhosphorIcon(PhosphorIconsFill.bell),
-                    label: 'Notifications',
-                    badgeCount: session.unreadNotices,
-                    showInTopBar: false,
-                    showInBottomBar: false,
-                  ),
-                  NavigationDestination(
-                    icon: const PhosphorIcon(
-                      PhosphorIconsRegular.messengerLogo,
+                    NavigationDestination(
+                      icon: const PhosphorIcon(PhosphorIconsRegular.usersThree),
+                      selectedIcon: const PhosphorIcon(
+                        PhosphorIconsFill.usersThree,
+                      ),
+                      label: 'Friends',
+                      badgeCount: session.incomingRequests.length,
                     ),
-                    selectedIcon: const PhosphorIcon(
-                      PhosphorIconsFill.messengerLogo,
+                    const NavigationDestination(
+                      icon: PhosphorIcon(PhosphorIconsRegular.usersFour),
+                      selectedIcon: PhosphorIcon(PhosphorIconsFill.usersFour),
+                      label: 'Groups',
                     ),
-                    label: 'Messages',
-                    badgeCount: session.unreadChats,
-                    showInTopBar: false,
-                    showInBottomBar: false,
-                  ),
-                  NavigationDestination(
-                    icon: PersonAvatar(People.me, size: portrait),
-                    selectedIcon: _RingedPortrait(size: portrait),
-                    label: 'Menu',
-                    showInTopBar: false,
-                  ),
-                ],
-                title: const _BarStart(),
-                actions: [
-                  _BarButton(
-                    icon: PhosphorIconsFill.messengerLogo,
-                    label: 'Messages',
-                    count: session.unreadChats,
-                    selected: destination == Destination.messages,
-                    onPressed: () => context.goTo(Destination.messages),
-                  ),
-                  _BarButton(
-                    icon: PhosphorIconsFill.bell,
-                    label: 'Notifications',
-                    count: session.unreadNotices,
-                    selected: destination == Destination.notifications,
-                    onPressed: () => context.goTo(Destination.notifications),
-                  ),
-                  const _AccountMenu(),
-                ],
-                mobileAppBar: _MobileAppBar(destination: destination),
-                body: _Screens(destination: destination),
+                    const NavigationDestination(
+                      icon: PhosphorIcon(PhosphorIconsRegular.storefront),
+                      selectedIcon: PhosphorIcon(PhosphorIconsFill.storefront),
+                      label: 'Marketplace',
+                    ),
+                    const NavigationDestination(
+                      icon: PhosphorIcon(PhosphorIconsRegular.calendarStar),
+                      selectedIcon: PhosphorIcon(
+                        PhosphorIconsFill.calendarStar,
+                      ),
+                      label: 'Events',
+                      showInBottomBar: false,
+                    ),
+                    NavigationDestination(
+                      icon: const PhosphorIcon(PhosphorIconsRegular.bell),
+                      selectedIcon: const PhosphorIcon(PhosphorIconsFill.bell),
+                      label: 'Notifications',
+                      badgeCount: session.unreadNotices,
+                      showInTopBar: false,
+                      showInBottomBar: false,
+                    ),
+                    NavigationDestination(
+                      icon: const PhosphorIcon(
+                        PhosphorIconsRegular.messengerLogo,
+                      ),
+                      selectedIcon: const PhosphorIcon(
+                        PhosphorIconsFill.messengerLogo,
+                      ),
+                      label: 'Messages',
+                      badgeCount: session.unreadChats,
+                      showInTopBar: false,
+                      showInBottomBar: false,
+                    ),
+                    NavigationDestination(
+                      icon: PersonAvatar(People.me, size: portrait),
+                      selectedIcon: _RingedPortrait(size: portrait),
+                      label: 'Menu',
+                      showInTopBar: false,
+                    ),
+                  ],
+                  title: const _BarStart(),
+                  actions: [
+                    _BarButton(
+                      icon: PhosphorIconsFill.messengerLogo,
+                      label: 'Messages',
+                      count: session.unreadChats,
+                      selected: destination == Destination.messages,
+                      onPressed: () => context.goTo(Destination.messages),
+                    ),
+                    _BarButton(
+                      icon: PhosphorIconsFill.bell,
+                      label: 'Notifications',
+                      count: session.unreadNotices,
+                      selected: destination == Destination.notifications,
+                      onPressed: () => context.goTo(Destination.notifications),
+                    ),
+                    const _AccountMenu(),
+                  ],
+                  mobileAppBar: _MobileAppBar(destination: destination),
+                  body: _Screens(destination: destination),
+                ),
               ),
             );
           },

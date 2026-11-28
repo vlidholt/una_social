@@ -22,6 +22,22 @@ extension SocialMetrics on ThemeData {
   /// The page margin on this form factor.
   double get margin =>
       (layoutTheme.pagePadding ?? const EdgeInsets.all(16)).horizontal / 2;
+
+  /// A pill-shaped text field on the muted fill, with no outline: the
+  /// comment field and the message composer.
+  ///
+  /// The focus ring is the theme's own decoration (`ThemeData.decoration`),
+  /// baked on the control radius, so a field that only rounds its `border`
+  /// keeps a rounded-rectangle ring around a pill. [buttonDecoration] sets
+  /// the ring on the same radius as the border.
+  UnaDecoration get pillFieldDecoration =>
+      buttonDecoration(radius: radii.full).copyWith(
+        color: colorScheme.muted,
+        border: UnaBorder.all(
+          color: const Color(0x00000000),
+          borderRadius: radii.full,
+        ),
+      );
 }
 
 /// A person's portrait, with an optional green dot when they are online and

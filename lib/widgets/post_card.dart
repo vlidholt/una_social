@@ -896,13 +896,7 @@ class _CommentFieldState extends State<_CommentField> {
             placeholder: const Text('Write a comment…'),
             textInputAction: TextInputAction.send,
             onSubmitted: (_) => _send(),
-            decoration: UnaDecoration(
-              color: scheme.muted,
-              border: UnaBorder.all(
-                color: const Color(0x00000000),
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
+            decoration: theme.pillFieldDecoration,
             trailing: IconButton.ghost(
               size: ButtonSize.sm,
               icon: PhosphorIcon(

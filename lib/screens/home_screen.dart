@@ -20,6 +20,11 @@ import 'package:una_social/widgets/stories.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
+  /// The widest the desktop's three columns grow, inside the page's
+  /// margins. The shell's top bar is as wide, so the logo stands over the
+  /// shortcuts and the account button over the contacts.
+  static const desktopMaxWidth = 1440.0;
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -114,7 +119,9 @@ class _DesktopColumns extends StatelessWidget {
       padding: EdgeInsets.only(left: page.left, right: page.right),
       child: Center(
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1440),
+          constraints: const BoxConstraints(
+            maxWidth: HomeScreen.desktopMaxWidth,
+          ),
           child: LayoutBuilder(
             builder: (context, constraints) {
               final width = constraints.maxWidth;
